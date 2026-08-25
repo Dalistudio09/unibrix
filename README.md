@@ -21,8 +21,17 @@ npm run dev
 
 ```bash
 npm run build
-npm run preview
 ```
+
+На Vercel: Framework = **Other**, Build Command = `npm run build`. Nitro пишет `.vercel/output`.
+
+В репозитории обязательно должны быть:
+- `src/router.tsx`
+- `src/routes/` (`__root.tsx`, `index.tsx`, `apply.tsx`, `cases.tsx`, `solutions.tsx`)
+- `src/routeTree.gen.ts`
+- `src/styles.css`
+
+Без `src/router.tsx` сборка падает с ошибкой про router.
 
 ## Контент и акция
 
