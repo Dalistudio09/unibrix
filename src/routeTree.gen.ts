@@ -10,13 +10,24 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AnketaRouteImport } from './routes/anketa'
 import { Route as ApplyRouteImport } from './routes/apply'
+import { Route as ArendaRouteImport } from './routes/arenda'
 import { Route as CasesRouteImport } from './routes/cases'
+import { Route as MagazinRouteImport } from './routes/magazin'
 import { Route as SolutionsRouteImport } from './routes/solutions'
+import { Route as ZapisiRouteImport } from './routes/zapisi'
+import { Route as ZayavkaRouteImport } from './routes/zayavka'
+import { Route as DemoSlugRouteImport } from './routes/demo.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnketaRoute = AnketaRouteImport.update({
+  id: '/anketa',
+  path: '/anketa',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApplyRoute = ApplyRouteImport.update({
@@ -24,9 +35,19 @@ const ApplyRoute = ApplyRouteImport.update({
   path: '/apply',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArendaRoute = ArendaRouteImport.update({
+  id: '/arenda',
+  path: '/arenda',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CasesRoute = CasesRouteImport.update({
   id: '/cases',
   path: '/cases',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MagazinRoute = MagazinRouteImport.update({
+  id: '/magazin',
+  path: '/magazin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SolutionsRoute = SolutionsRouteImport.update({
@@ -34,39 +55,109 @@ const SolutionsRoute = SolutionsRouteImport.update({
   path: '/solutions',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ZapisiRoute = ZapisiRouteImport.update({
+  id: '/zapisi',
+  path: '/zapisi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ZayavkaRoute = ZayavkaRouteImport.update({
+  id: '/zayavka',
+  path: '/zayavka',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoSlugRoute = DemoSlugRouteImport.update({
+  id: '/demo/$slug',
+  path: '/demo/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/anketa': typeof AnketaRoute
   '/apply': typeof ApplyRoute
+  '/arenda': typeof ArendaRoute
   '/cases': typeof CasesRoute
+  '/magazin': typeof MagazinRoute
   '/solutions': typeof SolutionsRoute
+  '/zapisi': typeof ZapisiRoute
+  '/zayavka': typeof ZayavkaRoute
+  '/demo/$slug': typeof DemoSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/anketa': typeof AnketaRoute
   '/apply': typeof ApplyRoute
+  '/arenda': typeof ArendaRoute
   '/cases': typeof CasesRoute
+  '/magazin': typeof MagazinRoute
   '/solutions': typeof SolutionsRoute
+  '/zapisi': typeof ZapisiRoute
+  '/zayavka': typeof ZayavkaRoute
+  '/demo/$slug': typeof DemoSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/anketa': typeof AnketaRoute
   '/apply': typeof ApplyRoute
+  '/arenda': typeof ArendaRoute
   '/cases': typeof CasesRoute
+  '/magazin': typeof MagazinRoute
   '/solutions': typeof SolutionsRoute
+  '/zapisi': typeof ZapisiRoute
+  '/zayavka': typeof ZayavkaRoute
+  '/demo/$slug': typeof DemoSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/apply' | '/cases' | '/solutions'
+  fullPaths:
+    | '/'
+    | '/anketa'
+    | '/apply'
+    | '/arenda'
+    | '/cases'
+    | '/magazin'
+    | '/solutions'
+    | '/zapisi'
+    | '/zayavka'
+    | '/demo/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/apply' | '/cases' | '/solutions'
-  id: '__root__' | '/' | '/apply' | '/cases' | '/solutions'
+  to:
+    | '/'
+    | '/anketa'
+    | '/apply'
+    | '/arenda'
+    | '/cases'
+    | '/magazin'
+    | '/solutions'
+    | '/zapisi'
+    | '/zayavka'
+    | '/demo/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/anketa'
+    | '/apply'
+    | '/arenda'
+    | '/cases'
+    | '/magazin'
+    | '/solutions'
+    | '/zapisi'
+    | '/zayavka'
+    | '/demo/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AnketaRoute: typeof AnketaRoute
   ApplyRoute: typeof ApplyRoute
+  ArendaRoute: typeof ArendaRoute
   CasesRoute: typeof CasesRoute
+  MagazinRoute: typeof MagazinRoute
   SolutionsRoute: typeof SolutionsRoute
+  ZapisiRoute: typeof ZapisiRoute
+  ZayavkaRoute: typeof ZayavkaRoute
+  DemoSlugRoute: typeof DemoSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -78,11 +169,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/anketa': {
+      id: '/anketa'
+      path: '/anketa'
+      fullPath: '/anketa'
+      preLoaderRoute: typeof AnketaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/apply': {
       id: '/apply'
       path: '/apply'
       fullPath: '/apply'
       preLoaderRoute: typeof ApplyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/arenda': {
+      id: '/arenda'
+      path: '/arenda'
+      fullPath: '/arenda'
+      preLoaderRoute: typeof ArendaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cases': {
@@ -92,6 +197,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CasesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/magazin': {
+      id: '/magazin'
+      path: '/magazin'
+      fullPath: '/magazin'
+      preLoaderRoute: typeof MagazinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/solutions': {
       id: '/solutions'
       path: '/solutions'
@@ -99,14 +211,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SolutionsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/zapisi': {
+      id: '/zapisi'
+      path: '/zapisi'
+      fullPath: '/zapisi'
+      preLoaderRoute: typeof ZapisiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/zayavka': {
+      id: '/zayavka'
+      path: '/zayavka'
+      fullPath: '/zayavka'
+      preLoaderRoute: typeof ZayavkaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/$slug': {
+      id: '/demo/$slug'
+      path: '/demo/$slug'
+      fullPath: '/demo/$slug'
+      preLoaderRoute: typeof DemoSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AnketaRoute: AnketaRoute,
   ApplyRoute: ApplyRoute,
+  ArendaRoute: ArendaRoute,
   CasesRoute: CasesRoute,
+  MagazinRoute: MagazinRoute,
   SolutionsRoute: SolutionsRoute,
+  ZapisiRoute: ZapisiRoute,
+  ZayavkaRoute: ZayavkaRoute,
+  DemoSlugRoute: DemoSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

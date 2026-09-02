@@ -4,48 +4,66 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { lead, solutions } from "@/content";
+import { contacts, lead } from "@/content";
+import { trackLead } from "@/lib/analytics";
 import { saveLead } from "@/lib/leads";
+import { submitLead } from "@/lib/submit-lead";
 import { cn } from "@/lib/utils";
 
-const options = [
-  ...solutions.map((s) => ({ id: s.id, label: s.title })),
-  { id: "unsure", label: lead.unsureLabel },
-];
-
 export function LeadForm({
-  defaultSolution = "",
+  defaultNiche = "",
   compact = false,
 }: {
-  defaultSolution?: string;
+  defaultNiche?: string;
   compact?: boolean;
 }) {
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
-  const [solutionId, setSolutionId] = useState(defaultSolution);
+  const [niche, setNiche] = useState(defaultNiche);
   const [comment, setComment] = useState("");
-  const [errors, setErrors] = useState<{ name?: string; contact?: string }>({});
+  const [errors, setErrors] = useState<{
+    name?: string;
+    contact?: string;
+    niche?: string;
+  }>({});
   const [status, setStatus] = useState<"idle" | "success">("idle");
+  const [busy, setBusy] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   useEffect(() => {
-    if (defaultSolution) setSolutionId(defaultSolution);
-  }, [defaultSolution]);
+    if (defaultNiche) setNiche(defaultNiche);
+  }, [defaultNiche]);
 
-  function onSubmit(e: FormEvent) {
+  async function onSubmit(e: FormEvent) {
     e.preventDefault();
-    const next: { name?: string; contact?: string } = {};
+    const next: { name?: string; contact?: string; niche?: string } = {};
     if (name.trim().length < 2) next.name = lead.errors.name;
     if (contact.trim().length < 3) next.contact = lead.errors.contact;
+    if (niche.trim().length < 2) next.niche = lead.errors.niche;
     setErrors(next);
-    if (next.name || next.contact) return;
+    setSubmitError("");
+    if (next.name || next.contact || next.niche) return;
 
-    saveLead({
+    const payload = {
       name: name.trim(),
       contact: contact.trim(),
-      solutionId,
+      niche: niche.trim(),
       comment: comment.trim(),
-    });
-    setStatus("success");
+    };
+
+    setBusy(true);
+    try {
+      await submitLead({ data: payload });
+      saveLead(payload);
+      trackLead();
+      setStatus("success");
+    } catch {
+      setSubmitError(
+        `Не удалось отправить. Напишите напрямую: ${contacts.telegram.text}`,
+      );
+    } finally {
+      setBusy(false);
+    }
   }
 
   if (status === "success") {
@@ -106,37 +124,20 @@ export function LeadForm({
           ) : null}
         </div>
 
-        <fieldset className="grid gap-2">
-          <legend className="text-sm font-medium text-ink">
-            {lead.fields.solution.label}
-          </legend>
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {options.map((opt) => {
-              const selected = solutionId === opt.id;
-              return (
-                <label
-                  key={opt.id}
-                  className={cn(
-                    "flex min-h-11 min-w-0 cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm transition-[border-color,background-color] duration-150",
-                    selected
-                      ? "border-brand bg-brand-soft text-ink"
-                      : "border-line bg-paper-elevated text-ink-muted hover:border-line-strong",
-                  )}
-                >
-                  <input
-                    type="radio"
-                    name="solution"
-                    value={opt.id}
-                    checked={selected}
-                    onChange={() => setSolutionId(opt.id)}
-                    className="sr-only"
-                  />
-                  <span className="min-w-0 truncate">{opt.label}</span>
-                </label>
-              );
-            })}
-          </div>
-        </fieldset>
+        <div className="grid gap-2">
+          <Label htmlFor="lead-niche">{lead.fields.niche.label}</Label>
+          <Input
+            id="lead-niche"
+            name="niche"
+            value={niche}
+            onChange={(e) => setNiche(e.target.value)}
+            placeholder={lead.fields.niche.placeholder}
+            aria-invalid={Boolean(errors.niche)}
+          />
+          {errors.niche ? (
+            <p className="text-sm text-danger">{errors.niche}</p>
+          ) : null}
+        </div>
 
         <div className="grid gap-2">
           <Label htmlFor="lead-comment">{lead.fields.comment.label}</Label>
@@ -150,8 +151,22 @@ export function LeadForm({
           />
         </div>
 
-        <Button type="submit" size="lg" className="w-full sm:w-auto">
-          {lead.submit}
+        {submitError ? (
+          <p className="text-sm text-danger" role="alert">
+            {submitError}{" "}
+            <a
+              href={contacts.telegram.href}
+              className="font-semibold underline"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {contacts.telegram.href}
+            </a>
+          </p>
+        ) : null}
+
+        <Button type="submit" size="lg" className="w-full sm:w-auto" disabled={busy}>
+          {busy ? "Отправка…" : lead.submit}
         </Button>
         <p className="text-xs leading-relaxed text-ink-subtle">{lead.consent}</p>
       </div>

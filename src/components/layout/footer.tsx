@@ -9,26 +9,11 @@ import {
 import { contacts, footer, nav, site } from "@/content";
 
 const contactItems = [
-  {
-    ...contacts.instagram,
-    icon: IconInstagram,
-  },
-  {
-    ...contacts.telegramBot,
-    icon: IconTelegram,
-  },
-  {
-    ...contacts.telegram,
-    icon: IconTelegram,
-  },
-  {
-    ...contacts.email,
-    icon: IconMail,
-  },
-  {
-    ...contacts.phone,
-    icon: IconWhatsApp,
-  },
+  { ...contacts.instagram, icon: IconInstagram },
+  { ...contacts.telegramBot, icon: IconTelegram },
+  { ...contacts.telegram, icon: IconTelegram },
+  { ...contacts.email, icon: IconMail },
+  { ...contacts.phone, icon: IconWhatsApp },
 ];
 
 export function Footer() {
@@ -40,6 +25,9 @@ export function Footer() {
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-on-navy-muted">
             {footer.blurb}
           </p>
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-on-navy-muted">
+            {footer.geo}
+          </p>
           <p className="mt-6 text-sm text-on-navy-muted">{site.domain}</p>
         </div>
 
@@ -47,10 +35,9 @@ export function Footer() {
           <p className="text-sm font-semibold text-on-navy">Разделы</p>
           <ul className="mt-4 space-y-1">
             {nav.map((item) => (
-              <li key={item.label}>
+              <li key={item.to}>
                 <Link
                   to={item.to}
-                  hash={"hash" in item ? item.hash : undefined}
                   className="inline-flex min-h-10 items-center text-sm text-on-navy-muted transition-colors duration-150 hover:text-on-navy"
                 >
                   {item.label}
@@ -59,10 +46,10 @@ export function Footer() {
             ))}
             <li>
               <Link
-                to="/apply"
+                to="/zayavka"
                 className="inline-flex min-h-10 items-center text-sm text-on-navy-muted transition-colors duration-150 hover:text-on-navy"
               >
-                Оставить заявку
+                Рассчитать
               </Link>
             </li>
           </ul>

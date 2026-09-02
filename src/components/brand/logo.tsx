@@ -24,8 +24,8 @@ export function Logo({ tone = "on-light", className }: LogoProps) {
       <img
         src={mark}
         alt=""
-        width={76}
-        height={72}
+        width={64}
+        height={60}
         className="h-9 w-auto shrink-0"
         draggable={false}
       />
@@ -33,7 +33,7 @@ export function Logo({ tone = "on-light", className }: LogoProps) {
         src={word}
         alt={site.name}
         width={200}
-        height={57}
+        height={56}
         className="h-5 w-auto max-w-[42vw] sm:h-6"
         draggable={false}
       />

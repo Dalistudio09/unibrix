@@ -1,16 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CasesSection } from "@/components/sections/cases-section";
+import { FaqJsonLd } from "@/components/json-ld";
+import { DemoGrid } from "@/components/sections/demo-grid";
+import { FaqSection } from "@/components/sections/faq-section";
 import { Hero } from "@/components/sections/hero";
 import { LeadSection } from "@/components/sections/lead-section";
-import { PricingSection } from "@/components/sections/pricing-section";
-import { ProcessSection } from "@/components/sections/process-section";
-import { SolutionsSection } from "@/components/sections/solutions-section";
-import { ValueSection } from "@/components/sections/value-section";
+import { SeoTopics } from "@/components/sections/seo-topics";
 import { site } from "@/content";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [{ title: site.title }, { name: "description", content: site.description }],
+  head: () => pageHead({
+    title: site.title,
+    description: site.description,
+    path: "/",
   }),
   component: Home,
 });
@@ -18,12 +20,11 @@ export const Route = createFileRoute("/")({
 function Home() {
   return (
     <main>
+      <FaqJsonLd />
       <Hero />
-      <ValueSection />
-      <SolutionsSection />
-      <ProcessSection />
-      <CasesSection />
-      <PricingSection />
+      <DemoGrid />
+      <SeoTopics />
+      <FaqSection />
       <LeadSection />
     </main>
   );

@@ -31,19 +31,14 @@ export function Header() {
         <Logo />
         <nav className="hidden items-center gap-2 md:flex" aria-label="Основное">
           {nav.map((item) => (
-            <Link
-              key={item.label}
-              to={item.to}
-              hash={"hash" in item ? item.hash : undefined}
-              className={navItemClass}
-            >
+            <Link key={item.to} to={item.to} className={navItemClass}>
               {item.label}
             </Link>
           ))}
         </nav>
         <div className="flex items-center gap-2">
           <Button asChild size="sm" className="hidden sm:inline-flex">
-            <Link to="/apply">Оставить заявку</Link>
+            <Link to="/zayavka">Рассчитать</Link>
           </Button>
           <button
             type="button"
@@ -72,9 +67,8 @@ export function Header() {
         >
           {nav.map((item) => (
             <Link
-              key={item.label}
+              key={item.to}
               to={item.to}
-              hash={"hash" in item ? item.hash : undefined}
               onClick={() => setOpen(false)}
               className="flex min-h-11 items-center rounded-md border border-line bg-paper px-3 text-base font-medium text-ink hover:border-brand hover:bg-brand-soft hover:text-brand"
             >
@@ -82,8 +76,8 @@ export function Header() {
             </Link>
           ))}
           <Button asChild className="mt-1 w-full">
-            <Link to="/apply" onClick={() => setOpen(false)}>
-              Оставить заявку
+            <Link to="/zayavka" onClick={() => setOpen(false)}>
+              Рассчитать
             </Link>
           </Button>
         </nav>

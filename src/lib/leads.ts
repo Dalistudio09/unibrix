@@ -1,7 +1,7 @@
 export type Lead = {
   name: string;
   contact: string;
-  solutionId: string;
+  niche: string;
   comment: string;
   createdAt: string;
 };

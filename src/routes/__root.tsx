@@ -7,6 +7,8 @@ import {
 import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { SiteShell } from "@/components/layout/site-shell";
+import { Analytics } from "@/components/analytics";
+import { OrganizationJsonLd } from "@/components/json-ld";
 import { site } from "@/content";
 import appCss from "../styles.css?url";
 
@@ -18,9 +20,14 @@ export const Route = createRootRoute({
       { title: site.title },
       { name: "description", content: site.description },
       { name: "theme-color", content: "#12181A" },
+      { name: "robots", content: "index,follow" },
     ],
     links: [
+      { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32.png" },
+      { rel: "icon", type: "image/png", sizes: "48x48", href: "/favicon-48.png" },
+      { rel: "icon", type: "image/png", sizes: "192x192", href: "/favicon-192.png" },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       {
         rel: "preconnect",
@@ -33,7 +40,6 @@ export const Route = createRootRoute({
       },
       { rel: "stylesheet", href: appCss },
       { rel: "manifest", href: "/__grok/manifest.webmanifest" },
-      { rel: "apple-touch-icon", href: "/__grok/icon-180.png" },
     ],
   }),
   component: RootDocument,
@@ -46,6 +52,8 @@ function RootDocument() {
         <HeadContent />
       </head>
       <body className="min-h-dvh bg-paper text-ink">
+        <OrganizationJsonLd />
+        <Analytics />
         <PreviewHostBridge />
         <AuthProvider>
           <SiteShell>
