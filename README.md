@@ -1,61 +1,80 @@
 # Unibrix.ai
 
-Сайт компании [Unibrix](https://unibrix.ai): готовые CRM-боты, интернет-магазины и Mini App для бизнеса в Telegram.
+Сайт-витрина [Unibrix](https://unibrix.ai): живые демо ботов в Telegram и заявка на расчёт.
+
+Это **сайт**, не Mini App и не репозиторий `unibrix-app`.
 
 ## Стек
 
-- [TanStack Start](https://tanstack.com/start) (React + Vite)
+- TanStack Start (React + Vite)
 - Tailwind CSS v4
 - TypeScript
+- Nitro → Vercel Build Output API (`.vercel/output`)
 
-## Запуск
+## Локально
 
 ```bash
 npm install
 npm run dev
 ```
 
-Сайт откроется на [http://localhost:8080](http://localhost:8080).
+## Vercel — существующий проект unibrix.ai
 
-Сборка:
+Новый проект **не создавать**. Залить код в тот проект, к которому уже привязан домен `unibrix.ai`, и сделать Redeploy.
 
-```bash
-npm run build
-```
+### Settings проекта
 
-На Vercel: Framework = **Other**, Build Command = `npm run build`. Nitro пишет `.vercel/output`.
+| Поле | Значение |
+|------|----------|
+| Framework Preset | **Other** |
+| Root Directory | `.` (корень этого репозитория сайта) |
+| Build Command | `npm run build` |
+| Output Directory | **пусто** — не заполнять. Nitro сам пишет `.vercel/output` |
+| Install Command | `npm install` |
+| Node.js | 22.x |
 
-В репозитории обязательно должны быть:
-- `src/router.tsx`
-- `src/routes/` (`__root.tsx`, `index.tsx`, `apply.tsx`, `cases.tsx`, `solutions.tsx`)
-- `src/routeTree.gen.ts`
-- `src/styles.css`
+**Не затирать:**
 
-Без `src/router.tsx` сборка падает с ошибкой про router.
+- Domain `unibrix.ai` и `www` в Vercel → Settings → Domains
+- DNS у регистратора
+- Production Branch текущего проекта
+- Env Vars, если они уже стоят — только добавить недостающие, не удалять доменные настройки
 
-## Контент и акция
+### Environment Variables
 
-Тексты, цены, контакты и настройки скидки — в [`src/content.ts`](src/content.ts).
+Нужны, чтобы заявки приходили в Telegram администратору. Только в Vercel, не в git.
 
-- Чтобы выключить акцию раньше срока: `promo.enabled = false`
-- Чтобы сменить размер скидки: `promo.discounts`
-- Чтобы сменить дату окончания: `promo.endsAt`
+| Name | Environment | Зачем |
+|------|-------------|--------|
+| `TELEGRAM_BOT_TOKEN` | Production (и Preview, если нужно) | токен бота `@unibrixbot` |
+| `ADMIN_TELEGRAM_ID` | Production | Telegram ID, куда слать заявки |
+
+После добавления переменных — Redeploy. Без них форма на сайте всё равно показывает «Заявка принята», но сообщение в Telegram не уйдёт.
+
+### Как выкатить
+
+1. Заменить код в GitHub-репозитории **этого сайта** (не `unibrix-app`).
+2. Vercel подтянет коммит в существующий проект и соберёт Production.
+3. Проверить `https://unibrix.ai/`, `/zapisi`, `/demo/lumi`, `/zayavka`, отправить тестовую заявку.
 
 ## Страницы
 
 | Путь | Страница |
 |------|----------|
 | `/` | Главная |
-| `/solutions` | Решения |
-| `/cases` | Кейсы |
-| `/apply` | Заявка |
+| `/zapisi` | Запись |
+| `/magazin` | Магазин |
+| `/anketa` | Анкета |
+| `/arenda` | Аренда |
+| `/zayavka` | Заявка |
+| `/demo/lumi` … `/demo/riel` | Демо ниш |
 
-Заявки сохраняются локально в браузере (localStorage).
+## SEO
 
-## Контакты
+- Уникальные `title` / `description` на каждую страницу
+- Canonical: `https://unibrix.ai…`
+- [`public/sitemap.xml`](public/sitemap.xml)
+- [`public/robots.txt`](public/robots.txt)
+- Open Graph: `/og.jpg`, favicon из логотипа
 
-- Instagram: [instagram.com/unibrix.ai](https://www.instagram.com/unibrix.ai)
-- Telegram-бот: [t.me/unibrixbot](https://t.me/unibrixbot)
-- Telegram: [t.me/unibrix](https://t.me/unibrix)
-- Email: [unibrix.ai@gmail.com](mailto:unibrix.ai@gmail.com)
-- WhatsApp: [+7 778 715 25 17](https://wa.me/77787152517)
+Тексты и демо — [`src/content.ts`](src/content.ts). Акция: `promo.enabled`, `promo.percent`, `promo.endsAt`.
